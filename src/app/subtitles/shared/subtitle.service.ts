@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Subtitle } from './subtitle.interface';
 
@@ -8,6 +9,17 @@ import { Subtitle } from './subtitle.interface';
 export class SubtitleService {
 
   constructor() {
+  }
+
+  getTextFromFile(file: File, encoding: string): Observable<string> {
+    return new Observable<string>(subscriber => {
+      const fileReader = new FileReader();
+      fileReader.onload = (fileLoadedEvent: any) => {
+        subscriber.next(fileLoadedEvent.target.result);
+        subscriber.complete();
+      };
+      fileReader.readAsText(file, encoding);
+    });
   }
 
   getSubtitlesFromText(text: string): Subtitle[] {
