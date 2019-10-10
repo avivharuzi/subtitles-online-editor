@@ -1,12 +1,11 @@
-import { Component, OnChanges, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-input-file',
   templateUrl: './input-file.component.html',
   styleUrls: ['./input-file.component.scss'],
 })
-export class InputFileComponent implements OnChanges {
-  @Input() files: FileList;
+export class InputFileComponent {
   @Input() multiple: boolean;
   @Input() defaultLabel: string;
   @Input() defaultLabelMultiple: string;
@@ -17,6 +16,7 @@ export class InputFileComponent implements OnChanges {
 
   @ViewChild('fileEl', { static: true }) fileEl: ElementRef;
 
+  files: FileList;
   label: string;
 
   constructor() {
@@ -26,12 +26,6 @@ export class InputFileComponent implements OnChanges {
     this.defaultLabelMultiple = 'Choose Files';
     this.setLabelToDefault();
     this.changedFiles = new EventEmitter<{ files: FileList, errors: string[] }>();
-  }
-
-  ngOnChanges() {
-    if (!this.files) {
-      this.reset();
-    }
   }
 
   onChange(): void {
@@ -47,12 +41,6 @@ export class InputFileComponent implements OnChanges {
 
   private setLabelToDefault(): void {
     this.label = this.multiple ? this.defaultLabelMultiple : this.defaultLabel;
-  }
-
-  private reset(): void {
-    this.files = null;
-    this.setLabelToDefault();
-    this.fileEl.nativeElement.value = '';
   }
 
   private setLabelByFileChange(): void {
