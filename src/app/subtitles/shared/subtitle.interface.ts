@@ -4,4 +4,5 @@ export interface Subtitle {
   end?: string;
   line1?: string;
   line2?: string;
+  isEditable?: boolean;
 }
