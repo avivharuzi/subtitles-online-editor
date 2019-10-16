@@ -1,4 +1,4 @@
-export interface SubtitlesEncoding {
+export interface SubtitleEncoding {
   name: string;
   description: string;
 }

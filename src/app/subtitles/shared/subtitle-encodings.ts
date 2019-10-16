@@ -1,6 +1,6 @@
-import { SubtitlesEncoding } from './subtitles-encoding.interface';
+import { SubtitleEncoding } from './subtitle-encoding.interface';
 
-export const SUBTITLES_ENCODINGS: SubtitlesEncoding[] = [
+export const SUBTITLE_ENCODINGS: SubtitleEncoding[] = [
   {
     name: 'BIG5',
     description: 'Big5, Traditional Chinese',
