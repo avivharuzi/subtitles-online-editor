@@ -102,6 +102,14 @@ export class SubtitleService {
     });
   }
 
+  getSubtitleTimePlus(t: string, n: number): string {
+    return SubtitleTime.getTimePlus(t, n);
+  }
+
+  getSubtitleTimeMinus(t: string, n: number): string {
+    return SubtitleTime.getTimeMinus(t, n);
+  }
+
   openAllSubtitlesEdit(): void {
     this.updateAllSubtitlesEdit(true);
   }
