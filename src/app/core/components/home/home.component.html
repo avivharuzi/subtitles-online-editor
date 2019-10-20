@@ -1,1 +1,212 @@
-<p>home works!</p>
+<ng-container *ngIf="!subtitleService.isInEditMode()">
+  <div class="row align-items-end mb-5">
+    <ng-container *ngIf="errors && errors.length > 0">
+      <div class="col-md-12">
+        <alert type="danger">
+          <p *ngFor="let error of errors"><i class="material-icons mr-2">error</i>{{ error }}</p>
+        </alert>
+      </div>
+    </ng-container>
+
+    <div class="col-md-6 mb-3">
+      <label>Subtitle File (support only .srt)</label>
+      <app-input-file [multiple]="false" [size]="1" [extensions]="['.srt']"
+                      (changedFiles)="onChangedFiles($event)"></app-input-file>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label>Encoding</label>
+      <select class="form-control" [(ngModel)]="subtitleEncodingSelected">
+        <option *ngFor="let subtitleEncoding of subtitleEncodings"
+                [value]="subtitleEncoding.name">{{ subtitleEncoding.name }}
+          - {{ subtitleEncoding.description }}</option>
+      </select>
+    </div>
+    <div class="col-md-2 mb-3">
+      <button class="btn btn-block btn-primary" [disabled]="!file" (click)="startEdit()">
+        <span class="d-flex justify-content-center"><i class="material-icons mr-2">send</i>Start Edit</span>
+      </button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="subtitleService.isInEditMode()">
+  <div class="row">
+    <div class="col-md-12 mb-5 text-center">
+      <button class="btn btn-primary btn-lg" (click)="subtitleService.resetSubtitles()">
+        <span class="d-flex justify-content-center"><i class="material-icons mr-2">undo</i>Edit Another</span>
+      </button>
+    </div>
+    <div class="col-md-12 mb-4">
+      <h3>{{ subtitleService.getSubtitlesFilename() }}</h3>
+    </div>
+  </div>
+
+  <div class="shadow">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <tabset>
+              <tab heading="Edit">
+                <div class="row mt-3">
+                  <div class="col-md-3 mb-3">
+                    <button class="btn btn-primary" (click)="subtitleService.openAllSubtitlesEdit()">Open all subtitles
+                      edit
+                    </button>
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <button class="btn btn-primary" (click)="subtitleService.closeAllSubtitlesEdit()">Close all
+                      subtitles edit
+                    </button>
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <button class="btn btn-primary" (click)="subtitleService.resetEdits()">Reset edits</button>
+                  </div>
+                </div>
+              </tab>
+              <tab heading="Shift">
+                <div class="row align-items-end mt-3">
+                  <div class="col-md-10 mb-3">
+                    <label>Time Shift (in milliseconds)</label>
+                    <input type="number" class="form-control" placeholder="1000" #timeShift required>
+                  </div>
+                  <div class="col-md-2 mb-3">
+                    <button class="btn btn-block btn-primary" (click)="subtitleService.resync(+timeShift.value)">
+                      <span class="d-flex justify-content-center"><i class="material-icons mr-2">sync</i>Resync</span>
+                    </button>
+                  </div>
+                </div>
+              </tab>
+              <tab heading="Export">
+                <div class="row align-items-end mt-3">
+                  <div class="col-md-6 mb-3">
+                    <label>Filename</label>
+                    <input type="text" class="form-control" placeholder="Filename" #filename
+                           [value]="subtitleService.getSubtitlesFilename()" required>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label>Encoding</label>
+                    <select class="form-control" [(ngModel)]="subtitleEncodingExportSelected">
+                      <option *ngFor="let subtitleEncoding of subtitleEncodings"
+                              [value]="subtitleEncoding.name">{{ subtitleEncoding.name }}
+                        - {{ subtitleEncoding.description }}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2 mb-3">
+                    <button class="btn btn-block btn-primary" (click)="download(filename.value)">
+                      <span class="d-flex justify-content-center"><i
+                        class="material-icons mr-2">get_app</i>Download</span>
+                    </button>
+                  </div>
+                </div>
+              </tab>
+            </tabset>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="table-container">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Index</th>
+              <th>Begin</th>
+              <th>End</th>
+              <th>Line 1</th>
+              <th>Line 2</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let subtitle of subtitleService.getSubtitles(); let i = index">
+              <td>{{ i + 1 }}</td>
+              <ng-container *ngIf="!subtitle.isEditable; else editSubtitleTemplate">
+                <td>{{ subtitle.begin }}</td>
+                <td>{{ subtitle.end }}</td>
+                <td>{{ subtitle.line1 }}</td>
+                <td>{{ subtitle.line2 }}</td>
+                <td>
+                  <div class="dropdown-container">
+                    <div class="btn-group" dropdown placement="bottom right">
+                      <button dropdownToggle type="button" class="btn btn-outline-primary"><i class="material-icons">more_vert</i>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right"
+                          role="menu" aria-labelledby="button-basic">
+                        <li role="menuitem">
+                          <button class="dropdown-item d-flex" (click)="subtitleService.toggleSubtitleIsEditable(i)"><i
+                            class="material-icons mr-2">edit</i>Edit
+                          </button>
+                        </li>
+                        <li role="menuitem">
+                          <button class="dropdown-item d-flex" (click)="subtitleService.addSubtitleBelow(i, subtitle)">
+                            <i
+                              class="material-icons mr-2">add</i>Add
+                            subtitle below
+                          </button>
+                        </li>
+                        <li class="divider dropdown-divider"></li>
+                        <li role="menuitem">
+                          <button class="dropdown-item bg-danger text-white d-flex"
+                                  (click)="subtitleService.deleteSubtitle(i)"><i
+                            class="material-icons mr-2">delete</i>Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-template #editSubtitleTemplate>
+                <td>
+                  <input class="form-control" type="text" minlength="12" maxlength="12" mask="00:00:00,000"
+                         #begin [value]="subtitle.begin === undefined ? '00:00:00,000' : subtitle.begin">
+                  <div class="btn-toolbar mt-2">
+                    <div class="btn-group">
+                      <button class="btn btn-primary btn-sm"
+                              (click)="begin.value = subtitleService.getSubtitleTimeMinus(begin.value, 100)"><i
+                        class="material-icons">remove</i></button>
+                      <button class="btn btn-primary btn-sm"
+                              (click)="begin.value = subtitleService.getSubtitleTimePlus(begin.value, 100)"><i
+                        class="material-icons">add</i></button>
+                    </div>
+                  </div>
+                </td>
+                <td><input class="form-control" type="text" minlength="12" maxlength="12" mask="00:00:00,000"
+                           #end [value]="subtitle.end === undefined ? '00:00:00,000' : subtitle.end">
+                  <div class="btn-toolbar mt-2">
+                    <div class="btn-group">
+                      <button class="btn btn-primary btn-sm"
+                              (click)="end.value = subtitleService.getSubtitleTimeMinus(end.value, 100)"><i
+                        class="material-icons">remove</i></button>
+                      <button class="btn btn-primary btn-sm"
+                              (click)="end.value = subtitleService.getSubtitleTimePlus(end.value, 100)"><i
+                        class="material-icons">add</i></button>
+                    </div>
+                  </div>
+                </td>
+                <td><input class="form-control" type="text"
+                           #line1 [value]="subtitle.line1 === undefined ? '' : subtitle.line1"></td>
+                <td><input class="form-control" type="text"
+                           #line2 [value]="subtitle.line2 === undefined ? '' : subtitle.line2"></td>
+                <td>
+                  <div class="d-flex">
+                    <button class="btn btn-outline-primary d-flex mr-2"
+                            (click)="subtitleService.toggleSubtitleIsEditable(i)"><i
+                      class="material-icons">cancel</i></button>
+                    <button class="btn btn-primary d-flex"
+                            (click)="subtitleService.updateSubtitle(i, begin.value, end.value, line1.value, line2.value)">
+                      <i
+                        class="material-icons">save</i>
+                    </button>
+                  </div>
+                </td>
+              </ng-template>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

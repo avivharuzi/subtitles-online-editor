@@ -1,0 +1,41 @@
+button.dropdown-item:focus {
+  outline: none;
+}
+
+.table-container {
+  height: 50vh;
+  overflow: auto;
+
+  table {
+    background: #fff;
+    border-spacing: 0;
+    border-collapse: separate;
+
+    thead {
+      background: inherit;
+
+      tr {
+        background: inherit;
+
+        th {
+          background: inherit;
+          top: 0px;
+          position: sticky;
+          z-index: 1001;
+        }
+      }
+    }
+  }
+}
+
+.dropdown-container {
+  .btn-group > .btn:not(:last-child):not(.dropdown-toggle), .btn-group > .btn-group:not(:last-child) > .btn {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+}
+
+.card {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
