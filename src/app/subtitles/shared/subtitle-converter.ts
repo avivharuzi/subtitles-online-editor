@@ -30,6 +30,7 @@ export class SubtitleConverter {
       if (line === '') {
         if (currentSubtitle.index !== undefined && currentSubtitle.begin !== undefined
           && currentSubtitle.end !== undefined && currentSubtitle.line1 !== undefined) {
+          currentSubtitle.isEditable = false;
           subtitles.push(currentSubtitle);
         }
         currentSubtitle = {};
