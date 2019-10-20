@@ -16,8 +16,9 @@ export class SubtitleService {
   }
 
   setSubtitles(subtitles: Subtitle[]): void {
-    this.subtitles = subtitles;
-    this.originalSubtitles = subtitles;
+    // Deep clone, because of reference problems.
+    this.subtitles = JSON.parse(JSON.stringify(subtitles));
+    this.originalSubtitles = JSON.parse(JSON.stringify(subtitles));
   }
 
   getSubtitlesFilename(): string {
@@ -123,7 +124,8 @@ export class SubtitleService {
       return;
     }
 
-    this.subtitles = this.originalSubtitles;
+    // Deep clone, because of reference problems.
+    this.subtitles = JSON.parse(JSON.stringify(this.originalSubtitles));
   }
 
   resetSubtitles(): void {
@@ -138,7 +140,7 @@ export class SubtitleService {
     }
 
     this.subtitles = this.subtitles.map((subtitle: Subtitle) => {
-      subtitle.isEditable = false;
+      subtitle.isEditable = isEditable;
       return subtitle;
     });
   }
