@@ -21,7 +21,7 @@ export class SubtitleService {
   }
 
   getSubtitlesFilename(): string {
-    return this.subtitlesFilename;
+    return this.subtitlesFilename.replace('.srt', '');
   }
 
   setSubtitlesFilename(subtitlesFilename: string): void {
@@ -91,11 +91,11 @@ export class SubtitleService {
 
     this.subtitles = this.subtitles.map((subtitle: Subtitle) => {
       if (ms > 0) {
-        subtitle.begin = SubtitleTime.getTimePlus(subtitle.begin, +ms);
-        subtitle.end = SubtitleTime.getTimePlus(subtitle.end, +ms);
+        subtitle.begin = SubtitleTime.getTimePlus(subtitle.begin, ms);
+        subtitle.end = SubtitleTime.getTimePlus(subtitle.end, ms);
       } else {
-        subtitle.begin = SubtitleTime.getTimeMinus(subtitle.begin, +ms);
-        subtitle.end = SubtitleTime.getTimeMinus(subtitle.end, +ms);
+        subtitle.begin = SubtitleTime.getTimeMinus(subtitle.begin, Math.abs(ms));
+        subtitle.end = SubtitleTime.getTimeMinus(subtitle.end, Math.abs(ms));
       }
 
       return subtitle;
