@@ -48,7 +48,6 @@ export class HomeComponent {
         const subtitles = SubtitleConverter.getSubtitlesFromText(text, this.removeTextFormatting);
         this.subtitleService.setSubtitles(subtitles);
         this.subtitleService.setSubtitlesFilename(this.file.name);
-        this.subtitleEncodingExportSelected = this.subtitleEncodingSelected;
         this.file = null;
         this.errors = null;
       } catch (e) {
