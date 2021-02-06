@@ -22,8 +22,8 @@ export class InputFileComponent {
   constructor() {
     this.files = null;
     this.multiple = false;
-    this.defaultLabel = 'Choose File';
-    this.defaultLabelMultiple = 'Choose Files';
+    this.defaultLabel = 'Choose file';
+    this.defaultLabelMultiple = 'Choose files';
     this.setLabelToDefault();
     this.changedFiles = new EventEmitter<{ files: FileList, errors: string[] }>();
   }
@@ -53,7 +53,7 @@ export class InputFileComponent {
     }
   }
 
-  private getErrorsByFileChange() {
+  private getErrorsByFileChange(): string[] {
     const errors = [];
 
     if (this.files.length > 1 && !this.multiple) {

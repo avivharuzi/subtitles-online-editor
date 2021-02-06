@@ -1,5 +1,5 @@
 export class SubtitleTime {
-  private static readonly charsToRemove = /:|,/g;
+  private static readonly charsToRemove = /[:,]/g;
 
   static getTimePlus(time: string, n: number): string {
     return this.isTimeValid(time) ? this.getTime(this.getMs(time) + n) : time;
@@ -9,7 +9,7 @@ export class SubtitleTime {
     return this.isTimeValid(time) ? this.getTime(this.getMs(time) - n) : time;
   }
 
-  private static isTimeValid(time: string) {
+  private static isTimeValid(time: string): boolean {
     return time.length === 12;
   }
 
@@ -38,7 +38,7 @@ export class SubtitleTime {
     return this.pad(hours) + ':' + this.pad(minutes) + ':' + this.pad(seconds) + ',' + this.pad(ms, 3);
   }
 
-  private static pad(n: number, z?: number) {
+  private static pad(n: number, z?: number): string {
     z = z || 2;
 
     return ('00' + n).slice(-z);

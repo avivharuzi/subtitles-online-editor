@@ -9,13 +9,13 @@
     </ng-container>
 
     <div class="col-md-6 mb-3">
-      <label>Subtitle File (support only .srt)</label>
+      <label>Subtitle file (support only .srt)</label>
       <app-input-file [multiple]="false" [size]="1" [extensions]="['.srt']"
                       (changedFiles)="onChangedFiles($event)"></app-input-file>
     </div>
     <div class="col-md-4 mb-3">
       <label>Encoding</label>
-      <select class="form-control" [(ngModel)]="subtitleEncodingSelected">
+      <select class="form-control" aria-label="encoding" [(ngModel)]="subtitleEncodingSelected">
         <option *ngFor="let subtitleEncoding of subtitleEncodings"
                 [value]="subtitleEncoding.name">{{ subtitleEncoding.name }}
           - {{ subtitleEncoding.description }}</option>
@@ -23,7 +23,7 @@
     </div>
     <div class="col-md-2 mb-3">
       <button class="btn btn-block btn-primary" [disabled]="!file" (click)="startEdit()">
-        <span class="d-flex justify-content-center"><i class="material-icons mr-2">send</i>Start Edit</span>
+        <span class="d-flex justify-content-center"><i class="material-icons mr-2">send</i>Edit</span>
       </button>
     </div>
   </div>
@@ -33,7 +33,7 @@
   <div class="row">
     <div class="col-md-12 mb-5 text-center">
       <button class="btn btn-primary btn-lg" (click)="subtitleService.resetSubtitles()">
-        <span class="d-flex justify-content-center"><i class="material-icons mr-2">undo</i>Edit Another</span>
+        <span class="d-flex justify-content-center"><i class="material-icons mr-2">undo</i>Edit new file</span>
       </button>
     </div>
     <div class="col-md-12 mb-4">
@@ -67,12 +67,12 @@
               <tab heading="Shift">
                 <div class="row align-items-end mt-3">
                   <div class="col-md-10 mb-3">
-                    <label>Time Shift (in milliseconds)</label>
-                    <input type="number" class="form-control" placeholder="1000" #timeShift required>
+                    <label>Time shift (in milliseconds)</label>
+                    <input type="number" class="form-control" placeholder="1000" aria-label="time-shift" #timeShift required>
                   </div>
                   <div class="col-md-2 mb-3">
-                    <button class="btn btn-block btn-primary" (click)="subtitleService.resync(+timeShift.value)">
-                      <span class="d-flex justify-content-center"><i class="material-icons mr-2">sync</i>Resync</span>
+                    <button class="btn btn-block btn-primary" (click)="subtitleService.rsync(+timeShift.value)">
+                      <span class="d-flex justify-content-center"><i class="material-icons mr-2">sync</i>Rsync</span>
                     </button>
                   </div>
                 </div>
@@ -81,12 +81,12 @@
                 <div class="row align-items-end mt-3">
                   <div class="col-md-6 mb-3">
                     <label>Filename</label>
-                    <input type="text" class="form-control" placeholder="Filename" #filename
+                    <input type="text" class="form-control" placeholder="Filename" aria-label="filename" #filename
                            [value]="subtitleService.getSubtitlesFilename()" required>
                   </div>
                   <div class="col-md-4 mb-3">
                     <label>Encoding</label>
-                    <select class="form-control" [(ngModel)]="subtitleEncodingExportSelected">
+                    <select class="form-control" aria-label="encoding" [(ngModel)]="subtitleEncodingExportSelected">
                       <option *ngFor="let subtitleEncoding of subtitleEncodings"
                               [value]="subtitleEncoding.name">{{ subtitleEncoding.name }}
                         - {{ subtitleEncoding.description }}</option>
@@ -160,7 +160,7 @@
               <ng-template #editSubtitleTemplate>
                 <td>
                   <input class="form-control" type="text" minlength="12" maxlength="12" mask="00:00:00,000"
-                         #begin [value]="subtitle.begin === undefined ? '00:00:00,000' : subtitle.begin">
+                         aria-label="time-begin" #begin [value]="subtitle.begin === undefined ? '00:00:00,000' : subtitle.begin">
                   <div class="btn-toolbar mt-2">
                     <div class="btn-group">
                       <button class="btn btn-primary btn-sm"
@@ -173,7 +173,7 @@
                   </div>
                 </td>
                 <td><input class="form-control" type="text" minlength="12" maxlength="12" mask="00:00:00,000"
-                           #end [value]="subtitle.end === undefined ? '00:00:00,000' : subtitle.end">
+                           aria-label="time-end" #end [value]="subtitle.end === undefined ? '00:00:00,000' : subtitle.end">
                   <div class="btn-toolbar mt-2">
                     <div class="btn-group">
                       <button class="btn btn-primary btn-sm"
@@ -185,9 +185,9 @@
                     </div>
                   </div>
                 </td>
-                <td><input class="form-control" type="text"
+                <td><input class="form-control" type="text" aria-label="line1"
                            #line1 [value]="subtitle.line1 === undefined ? '' : subtitle.line1"></td>
-                <td><input class="form-control" type="text"
+                <td><input class="form-control" type="text" aria-label="line2"
                            #line2 [value]="subtitle.line2 === undefined ? '' : subtitle.line2"></td>
                 <td>
                   <div class="d-flex">

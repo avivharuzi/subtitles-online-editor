@@ -63,7 +63,7 @@ export class SubtitleService {
     };
   }
 
-  addSubtitleBelow(i, subtitle: Subtitle): void {
+  addSubtitleBelow(i: number, subtitle: Subtitle): void {
     if (!this.isInEditMode()) {
       return;
     }
@@ -81,7 +81,7 @@ export class SubtitleService {
     this.subtitles.splice(i + 1, 0, { begin, end, isEditable: true });
   }
 
-  resync(ms: number): void {
+  rsync(ms: number): void {
     if (!this.isInEditMode()) {
       return;
     }
