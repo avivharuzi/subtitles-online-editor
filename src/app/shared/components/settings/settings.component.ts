@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { SubtitleEncoding } from '../../../subtitles/shared/subtitle-encoding.interface';
-import { SUBTITLE_ENCODINGS } from '../../../subtitles/shared/subtitle-encodings';
 import { SettingsService } from '../../shared/settings.service';
+import { SUBTITLE_ENCODINGS } from '../../../subtitles/shared/subtitle-encodings';
+import { SubtitleEncoding } from '../../../subtitles/shared/subtitle-encoding.interface';
 
 @Component({
   selector: 'app-settings',
@@ -16,7 +16,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
   ) {
     this.subtitleEncodings = SUBTITLE_ENCODINGS;
   }

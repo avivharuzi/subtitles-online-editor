@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Subtitle } from './subtitle.interface';
 
 export class SubtitleConverter {
-  private static readonly srtTagsRegex: RegExp
+  private static readonly srtTagsRegExp: RegExp
     = /<b>|<\/b>|{b}|{\/b}|<i>|<\/i>|{i}|{\/i}|<u>|<\/u>|{u}|{\/u}|<font color=".*">|<font color='.*'>|<\/font>|{\\a.*}/gi;
 
   static getTextFromFile(file: File, encoding: string): Observable<string> {
@@ -20,20 +20,20 @@ export class SubtitleConverter {
   static getSubtitlesFromText(text: string, removeTextFormatting: boolean = false): Subtitle[] {
     const lines = text.trim().split('\n');
 
-    // Fix last line because in the loop we always looking for empty line in order to push the subtitle.
-    lines.push('');
-
     if (!(lines.length > 0)) {
       throw new Error('Invalid text, no lines were found');
     }
 
+    // Fix last line because in the loop we always looking for empty line in order to push the subtitle.
+    lines.push('');
+
     const subtitles: Subtitle[] = [];
     let currentSubtitle: Subtitle = {};
 
-    for (let line of lines) {
-      line = line.trim();
+    for (const line of lines) {
+      const currentLine: string = line.trim();
 
-      if (line === '') {
+      if (currentLine === '') {
         if (currentSubtitle.index !== undefined && currentSubtitle.begin !== undefined
           && currentSubtitle.end !== undefined && currentSubtitle.line1 !== undefined) {
           currentSubtitle.isEditable = false;
@@ -44,15 +44,15 @@ export class SubtitleConverter {
       }
 
       if (currentSubtitle.index === undefined) {
-        if (isNaN(parseInt(line, 0))) {
+        if (isNaN(parseInt(currentLine, 0))) {
           throw new Error('Invalid text, index must be number');
         }
-        currentSubtitle.index = line;
+        currentSubtitle.index = currentLine;
         continue;
       }
 
       if (currentSubtitle.begin === undefined || currentSubtitle.end === undefined) {
-        const times = line.split('-->');
+        const times = currentLine.split('-->');
         if (times.length !== 2) {
           throw new Error('Invalid text, begin and end times must separated by -->');
         }
@@ -62,12 +62,12 @@ export class SubtitleConverter {
       }
 
       if (currentSubtitle.line1 === undefined) {
-        currentSubtitle.line1 = this.modifyLine(line, removeTextFormatting);
+        currentSubtitle.line1 = this.modifyLine(currentLine, removeTextFormatting);
         continue;
       }
 
       if (currentSubtitle.line2 === undefined) {
-        currentSubtitle.line2 = this.modifyLine(line, removeTextFormatting);
+        currentSubtitle.line2 = this.modifyLine(currentLine, removeTextFormatting);
       }
     }
 
@@ -97,7 +97,7 @@ export class SubtitleConverter {
     let modifiedLine = line;
 
     if (removeTextFormatting) {
-      modifiedLine = modifiedLine.replace(this.srtTagsRegex, '');
+      modifiedLine = modifiedLine.replace(this.srtTagsRegExp, '');
     }
 
     return modifiedLine.trim();

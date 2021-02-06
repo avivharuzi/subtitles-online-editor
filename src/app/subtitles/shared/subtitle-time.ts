@@ -1,5 +1,5 @@
 export class SubtitleTime {
-  private static readonly charsToRemove = /[:,]/g;
+  private static readonly charsToRemoveRegExp: RegExp = /[:,]/g;
 
   static getTimePlus(time: string, n: number): string {
     return this.isTimeValid(time) ? this.getTime(this.getMs(time) + n) : time;
@@ -14,7 +14,7 @@ export class SubtitleTime {
   }
 
   private static getMs(time: string): number {
-    const times = time.split(this.charsToRemove);
+    const times = time.split(this.charsToRemoveRegExp);
     const hh = +times[0];
     const mm = +times[1];
     const ss = +times[2];

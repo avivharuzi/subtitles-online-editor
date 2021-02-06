@@ -1,37 +1,44 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 
+import { Subscription } from 'rxjs';
+
+import { SettingsService } from '../../../shared/shared/settings.service';
 import { SUBTITLE_ENCODINGS } from '../../../subtitles/shared/subtitle-encodings';
 import { SubtitleConverter } from '../../../subtitles/shared/subtitle-converter';
 import { SubtitleEncoding } from '../../../subtitles/shared/subtitle-encoding.interface';
 import { SubtitleService } from '../../../subtitles/shared/subtitle.service';
-import { SettingsService } from '../../../shared/shared/settings.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   subtitleEncodings: SubtitleEncoding[];
   subtitleEncodingSelected: string;
   subtitleEncodingExportSelected: string;
   removeTextFormatting: boolean;
   file: File;
   errors: string[];
+  settingsUpdatedSubscription: Subscription;
 
   constructor(
-    public subtitleService: SubtitleService,
     private renderer: Renderer2,
     private settingsService: SettingsService,
+    public subtitleService: SubtitleService,
   ) {
     this.subtitleEncodings = SUBTITLE_ENCODINGS;
     this.updateFormDefaultValues();
   }
 
   ngOnInit(): void {
-    this.settingsService.getSettingsUpdatedObservable().subscribe(() => {
+    this.settingsUpdatedSubscription = this.settingsService.getSettingsUpdatedObservable().subscribe(() => {
       this.updateFormDefaultValues();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.settingsUpdatedSubscription.unsubscribe();
   }
 
   onChangedFiles({ files, errors }: { files: FileList, errors: string[] }): void {

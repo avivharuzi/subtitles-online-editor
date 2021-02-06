@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { InputFileComponent } from './components/input-file/input-file.component';
-import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
-import { SettingsComponent } from './components/settings/settings.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { InputFileComponent } from './components/input-file/input-file.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
+
 @NgModule({
-  declarations: [InputFileComponent, SettingsModalComponent, SettingsComponent],
+  declarations: [InputFileComponent, SettingsComponent, SettingsModalComponent],
   imports: [CommonModule, ReactiveFormsModule],
   entryComponents: [SettingsModalComponent],
   exports: [InputFileComponent, SettingsModalComponent],

@@ -7,7 +7,6 @@
         </alert>
       </div>
     </ng-container>
-
     <div class="col-md-6 mb-3">
       <label>Subtitle file (support only .srt)</label>
       <app-input-file [multiple]="false" [size]="1" [extensions]="['.srt']"
@@ -34,7 +33,6 @@
     </div>
   </div>
 </ng-container>
-
 <ng-container *ngIf="subtitleService.isInEditMode()">
   <div class="row">
     <div class="col-md-12 mb-5 text-center">
@@ -46,7 +44,6 @@
       <h3>{{ subtitleService.getSubtitlesFilename() }}</h3>
     </div>
   </div>
-
   <div class="shadow">
     <div class="row">
       <div class="col-md-12">
@@ -113,7 +110,6 @@
           </div>
         </div>
       </div>
-
       <div class="col-md-12">
         <div class="table-container">
           <table class="table table-striped">

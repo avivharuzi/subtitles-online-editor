@@ -14,6 +14,8 @@ export class SubtitleService {
   private syncInMs: number;
 
   constructor() {
+    this.subtitles = [];
+    this.originalSubtitles = [];
     this.syncInMs = 0;
   }
 
@@ -141,8 +143,8 @@ export class SubtitleService {
   }
 
   resetSubtitles(): void {
-    this.subtitles = null;
-    this.originalSubtitles = null;
+    this.subtitles = [];
+    this.originalSubtitles = [];
     this.subtitlesFilename = null;
   }
 

@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
+
 import { SettingsModalComponent } from './shared/components/settings-modal/settings-modal.component';
 import { SettingsService } from './shared/shared/settings.service';
 
@@ -8,15 +11,24 @@ import { SettingsService } from './shared/shared/settings.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   bsModalRef: BsModalRef;
 
-  constructor(private bsModalService: BsModalService, private settingsService: SettingsService) {}
+  settingsUpdatedSubscription: Subscription;
+
+  constructor(
+    private bsModalService: BsModalService,
+    private settingsService: SettingsService,
+  ) {}
 
   ngOnInit(): void {
-    this.settingsService.getSettingsUpdatedObservable().subscribe(() => {
+    this.settingsUpdatedSubscription = this.settingsService.getSettingsUpdatedObservable().subscribe(() => {
       this.bsModalRef.hide();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.settingsUpdatedSubscription.unsubscribe();
   }
 
   openSettingsModalComponent(): void {

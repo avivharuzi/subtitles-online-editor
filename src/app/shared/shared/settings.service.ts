@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { SubtitleService } from '../../subtitles/shared/subtitle.service';
+
 import { Observable, Subject } from 'rxjs';
+
+import { SubtitleService } from '../../subtitles/shared/subtitle.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
-  private readonly ITEM_SUBTITLE_ENCODING_SETTING = 'SUBTITLE_ENCODING_SETTING';
-  private readonly ITEM_SUBTITLE_ENCODING_EXPORT_SETTING = 'SUBTITLE_ENCODING_EXPORT_SETTING';
-  private readonly ITEM_REMOVE_TEXT_FORMATTING_SETTING = 'REMOVE_TEXT_FORMATTING_SETTING';
+  private readonly ITEM_SUBTITLE_ENCODING_SETTING: string = 'SUBTITLE_ENCODING_SETTING';
+  private readonly ITEM_SUBTITLE_ENCODING_EXPORT_SETTING: string = 'SUBTITLE_ENCODING_EXPORT_SETTING';
+  private readonly ITEM_REMOVE_TEXT_FORMATTING_SETTING: string = 'REMOVE_TEXT_FORMATTING_SETTING';
 
-  private readonly DEFAULT_ENCODING = 'UTF-8';
+  private readonly DEFAULT_ENCODING: string = 'UTF-8';
 
   private subtitleEncoding: string;
   private subtitleEncodingExport: string;
@@ -19,7 +21,7 @@ export class SettingsService {
   private settingsUpdated: Subject<void>;
 
   constructor(
-    private subtitleService: SubtitleService
+    private subtitleService: SubtitleService,
   ) {
     this.setSubtitleEncoding(localStorage.getItem(this.ITEM_SUBTITLE_ENCODING_SETTING));
     this.setSubtitleEncodingExport(localStorage.getItem(this.ITEM_SUBTITLE_ENCODING_EXPORT_SETTING));
