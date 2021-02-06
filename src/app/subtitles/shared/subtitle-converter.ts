@@ -20,6 +20,9 @@ export class SubtitleConverter {
   static getSubtitlesFromText(text: string, removeTextFormatting: boolean = false): Subtitle[] {
     const lines = text.trim().split('\n');
 
+    // Fix last line because in the loop we always looking for empty line in order to push the subtitle.
+    lines.push('');
+
     if (!(lines.length > 0)) {
       throw new Error('Invalid text, no lines were found');
     }
