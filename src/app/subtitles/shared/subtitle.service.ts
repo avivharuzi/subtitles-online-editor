@@ -10,6 +10,11 @@ export class SubtitleService {
   private subtitlesFilename: string;
   private subtitles: Subtitle[];
   private originalSubtitles: Subtitle[];
+  private syncInMs: number;
+
+  constructor() {
+    this.syncInMs = 0;
+  }
 
   getSubtitles(): Subtitle[] {
     return this.subtitles;
@@ -27,6 +32,10 @@ export class SubtitleService {
 
   setSubtitlesFilename(subtitlesFilename: string): void {
     this.subtitlesFilename = subtitlesFilename;
+  }
+
+  getSyncInMs(): number {
+    return this.syncInMs;
   }
 
   isInEditMode(): boolean {
@@ -101,6 +110,8 @@ export class SubtitleService {
 
       return subtitle;
     });
+
+    this.updateSyncInMs(ms);
   }
 
   getSubtitleTimePlus(t: string, n: number): string {
@@ -132,6 +143,17 @@ export class SubtitleService {
     this.subtitles = null;
     this.originalSubtitles = null;
     this.subtitlesFilename = null;
+  }
+
+  private updateSyncInMs(ms: number): void {
+    if (ms > 0) {
+      this.syncInMs += ms;
+    } else if (ms < 0) {
+      this.syncInMs -= Math.abs(ms);
+    } else {
+      // If it's 0 do nothing.
+      return;
+    }
   }
 
   private updateAllSubtitlesEdit(isEditable: boolean): void {

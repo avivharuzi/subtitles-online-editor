@@ -75,6 +75,9 @@
                       <span class="d-flex justify-content-center"><i class="material-icons mr-2">sync</i>Rsync</span>
                     </button>
                   </div>
+                  <div class="col-md-2 mb-3">
+                    Synced: {{ subtitleService.getSyncInMs() }}
+                  </div>
                 </div>
               </tab>
               <tab heading="Export">
