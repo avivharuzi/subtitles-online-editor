@@ -67,6 +67,8 @@ ngx-bootstrap/component-loader
 
 ngx-bootstrap/dropdown
 
+ngx-bootstrap/modal
+
 ngx-bootstrap/positioning
 
 ngx-bootstrap/tabs
