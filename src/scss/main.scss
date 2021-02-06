@@ -1,5 +1,5 @@
-// Custom bootstrap variables.
-@import './vendors/bootstrap/custom';
+/*---------- Vendor ----------*/
+@import './vendor/bootstrap/bootstrap';
 
-// Bootstrap and its default variables.
-@import 'node_modules/bootstrap/scss/bootstrap';
+/*---------- Base ----------*/
+@import './base/common';

@@ -1,0 +1,27 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div class="col-md-12 mb-3">
+    <label>Encoding</label>
+    <select class="form-control" aria-label="encoding" formControlName="subtitleEncodingSelected">
+      <option *ngFor="let subtitleEncoding of subtitleEncodings"
+              [value]="subtitleEncoding.name">{{ subtitleEncoding.name }}
+        - {{ subtitleEncoding.description }}</option>
+    </select>
+  </div>
+  <div class="col-md-12 mb-3">
+    <label>Export encoding</label>
+    <select class="form-control" aria-label="encoding" formControlName="subtitleEncodingExportSelected">
+      <option *ngFor="let subtitleEncoding of subtitleEncodings"
+              [value]="subtitleEncoding.name">{{ subtitleEncoding.name }}
+        - {{ subtitleEncoding.description }}</option>
+    </select>
+  </div>
+  <div class="col-md-12 mb-4">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="removeTextFormattingSettings" formControlName="removeTextFormatting">
+      <label class="custom-control-label" for="removeTextFormattingSettings">Remove text formatting</label>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-primary">Update</button>
+  </div>
+</form>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Subtitle } from './subtitle.interface';
 import { SubtitleTime } from './subtitle-time';
+import { SUBTITLE_ENCODINGS } from './subtitle-encodings';
 
 @Injectable({
   providedIn: 'root',
@@ -143,6 +144,11 @@ export class SubtitleService {
     this.subtitles = null;
     this.originalSubtitles = null;
     this.subtitlesFilename = null;
+  }
+
+  isEncodingValid(encoding: string): boolean {
+    const encodingsNames = SUBTITLE_ENCODINGS.map(se => se.name);
+    return encodingsNames.includes(encoding);
   }
 
   private updateSyncInMs(ms: number): void {
