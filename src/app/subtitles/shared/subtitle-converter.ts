@@ -75,13 +75,16 @@ export class SubtitleConverter {
     let text = '';
 
     for (const [i, subtitle] of subtitles.entries()) {
-      text += `${i + 1}\n`;
+      const lineNumber = i + 1;
+      text += `${lineNumber}\n`;
       text += `${subtitle.begin} --> ${subtitle.end}\n`;
       text += `${subtitle.line1}\n`;
       if (subtitle.line2) {
         text += `${subtitle.line2}\n`;
       }
-      text += '\n';
+      if (subtitles.length !== lineNumber) {
+        text += '\n';
+      }
     }
 
     return text;
