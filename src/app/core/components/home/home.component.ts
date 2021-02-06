@@ -14,6 +14,7 @@ export class HomeComponent {
   subtitleEncodings: SubtitleEncoding[];
   subtitleEncodingSelected: string;
   subtitleEncodingExportSelected: string;
+  removeTextFormatting: boolean;
   file: File;
   errors: string[];
 
@@ -24,6 +25,7 @@ export class HomeComponent {
     this.subtitleEncodings = SUBTITLE_ENCODINGS;
     this.subtitleEncodingSelected = 'UTF-8';
     this.subtitleEncodingExportSelected = 'UTF-8';
+    this.removeTextFormatting = false;
   }
 
   onChangedFiles({ files, errors }: { files: FileList, errors: string[] }): void {
@@ -43,7 +45,7 @@ export class HomeComponent {
 
     SubtitleConverter.getTextFromFile(this.file, this.subtitleEncodingSelected).subscribe(text => {
       try {
-        const subtitles = SubtitleConverter.getSubtitlesFromText(text);
+        const subtitles = SubtitleConverter.getSubtitlesFromText(text, this.removeTextFormatting);
         this.subtitleService.setSubtitles(subtitles);
         this.subtitleService.setSubtitlesFilename(this.file.name);
         this.subtitleEncodingExportSelected = this.subtitleEncodingSelected;

@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 import { Subtitle } from './subtitle.interface';
 
 export class SubtitleConverter {
+  private static readonly srtTagsRegex: RegExp
+    = /<b>|<\/b>|{b}|{\/b}|<i>|<\/i>|{i}|{\/i}|<u>|<\/u>|{u}|{\/u}|<font color=".*">|<font color='.*'>|<\/font>|{\\a.*}/gi;
+
   static getTextFromFile(file: File, encoding: string): Observable<string> {
     return new Observable<string>(subscriber => {
       const fileReader = new FileReader();
@@ -14,7 +17,7 @@ export class SubtitleConverter {
     });
   }
 
-  static getSubtitlesFromText(text: string): Subtitle[] {
+  static getSubtitlesFromText(text: string, removeTextFormatting: boolean = false): Subtitle[] {
     const lines = text.trim().split('\n');
 
     if (!(lines.length > 0)) {
@@ -56,12 +59,12 @@ export class SubtitleConverter {
       }
 
       if (currentSubtitle.line1 === undefined) {
-        currentSubtitle.line1 = line;
+        currentSubtitle.line1 = this.modifyLine(line, removeTextFormatting);
         continue;
       }
 
       if (currentSubtitle.line2 === undefined) {
-        currentSubtitle.line2 = line;
+        currentSubtitle.line2 = this.modifyLine(line, removeTextFormatting);
       }
     }
 
@@ -82,5 +85,15 @@ export class SubtitleConverter {
     }
 
     return text;
+  }
+
+  private static modifyLine(line: string, removeTextFormatting: boolean = false): string {
+    let modifiedLine = line;
+
+    if (removeTextFormatting) {
+      modifiedLine = modifiedLine.replace(this.srtTagsRegex, '');
+    }
+
+    return modifiedLine.trim();
   }
 }
