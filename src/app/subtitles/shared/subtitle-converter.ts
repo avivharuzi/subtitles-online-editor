@@ -6,6 +6,8 @@ export class SubtitleConverter {
   private static readonly srtTagsRegExp: RegExp
     = /<b>|<\/b>|{b}|{\/b}|<i>|<\/i>|{i}|{\/i}|<u>|<\/u>|{u}|{\/u}|<font color=".*">|<font color='.*'>|<\/font>|{\\a.*}/gi;
 
+  private static readonly dashRegExp: RegExp = /^-+|-+$/gm;
+
   static getTextFromFile(file: File, encoding: string): Observable<string> {
     return new Observable<string>(subscriber => {
       const fileReader = new FileReader();
@@ -98,6 +100,8 @@ export class SubtitleConverter {
 
     if (removeTextFormatting) {
       modifiedLine = modifiedLine.replace(this.srtTagsRegExp, '');
+      modifiedLine = modifiedLine.trim();
+      modifiedLine = modifiedLine.replace(this.dashRegExp, '');
     }
 
     return modifiedLine.trim();
