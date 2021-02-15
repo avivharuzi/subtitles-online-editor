@@ -8,6 +8,8 @@ export class SubtitleConverter {
 
   private static readonly dashRegExp: RegExp = /^-+|-+$/gm;
 
+  private static readonly spaceBetweenRegExp: RegExp = /\s+/g;
+
   static getTextFromFile(file: File, encoding: string): Observable<string> {
     return new Observable<string>(subscriber => {
       const fileReader = new FileReader();
@@ -102,6 +104,8 @@ export class SubtitleConverter {
       modifiedLine = modifiedLine.replace(this.srtTagsRegExp, '');
       modifiedLine = modifiedLine.trim();
       modifiedLine = modifiedLine.replace(this.dashRegExp, '');
+      modifiedLine = modifiedLine.trim();
+      modifiedLine = modifiedLine.replace(this.spaceBetweenRegExp, ' ');
     }
 
     return modifiedLine.trim();
