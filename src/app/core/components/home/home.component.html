@@ -165,7 +165,7 @@
               <ng-template #editSubtitleTemplate>
                 <td>
                   <input class="form-control" type="text" minlength="12" maxlength="12" mask="00:00:00,000"
-                         aria-label="time-begin" #begin [value]="subtitle.begin === undefined ? '00:00:00,000' : subtitle.begin">
+                         aria-label="time-begin" #begin [(ngModel)]="subtitle.begin">
                   <div class="btn-toolbar mt-2">
                     <div class="btn-group">
                       <button class="btn btn-primary btn-sm"
@@ -178,7 +178,7 @@
                   </div>
                 </td>
                 <td><input class="form-control" type="text" minlength="12" maxlength="12" mask="00:00:00,000"
-                           aria-label="time-end" #end [value]="subtitle.end === undefined ? '00:00:00,000' : subtitle.end">
+                           aria-label="time-end" #end [(ngModel)]="subtitle.end">
                   <div class="btn-toolbar mt-2">
                     <div class="btn-group">
                       <button class="btn btn-primary btn-sm"
