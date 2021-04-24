@@ -6,7 +6,7 @@ describe('SubtitleService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SubtitleService = TestBed.get(SubtitleService);
+    const service: SubtitleService = TestBed.inject(SubtitleService);
     expect(service).toBeTruthy();
   });
 });
