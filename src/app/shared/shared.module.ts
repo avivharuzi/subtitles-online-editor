@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { SettingsComponent } from './components/settings/settings.component';
@@ -8,8 +8,14 @@ import { SettingsModalComponent } from './components/settings-modal/settings-mod
 
 @NgModule({
   declarations: [InputFileComponent, SettingsComponent, SettingsModalComponent],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   entryComponents: [SettingsModalComponent],
-  exports: [InputFileComponent, SettingsModalComponent],
+  exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputFileComponent,
+    SettingsModalComponent,
+  ],
 })
 export class SharedModule {}

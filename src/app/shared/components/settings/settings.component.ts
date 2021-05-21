@@ -12,11 +12,12 @@ import { SubtitleEncoding } from '../../../subtitles/shared/subtitle-encoding.in
 })
 export class SettingsComponent implements OnInit {
   subtitleEncodings: SubtitleEncoding[];
+  // @ts-ignore
   form: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
-    private settingsService: SettingsService,
+    private settingsService: SettingsService
   ) {
     this.subtitleEncodings = SUBTITLE_ENCODINGS;
   }
@@ -28,7 +29,9 @@ export class SettingsComponent implements OnInit {
   initForm(): void {
     this.form = this.formBuilder.group({
       subtitleEncodingSelected: [this.settingsService.getSubtitleEncoding()],
-      subtitleEncodingExportSelected: [this.settingsService.getSubtitleEncodingExport()],
+      subtitleEncodingExportSelected: [
+        this.settingsService.getSubtitleEncodingExport(),
+      ],
       removeTextFormatting: [this.settingsService.getRemoveTextFormatting()],
     });
   }
@@ -38,9 +41,15 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
-    this.settingsService.setSubtitleEncoding(this.form.value.subtitleEncodingSelected);
-    this.settingsService.setSubtitleEncodingExport(this.form.value.subtitleEncodingExportSelected);
-    this.settingsService.setRemoveTextFormatting(this.form.value.removeTextFormatting);
+    this.settingsService.setSubtitleEncoding(
+      this.form.value.subtitleEncodingSelected
+    );
+    this.settingsService.setSubtitleEncodingExport(
+      this.form.value.subtitleEncodingExportSelected
+    );
+    this.settingsService.setRemoveTextFormatting(
+      this.form.value.removeTextFormatting
+    );
 
     this.settingsService.emitSettingsUpdated();
   }

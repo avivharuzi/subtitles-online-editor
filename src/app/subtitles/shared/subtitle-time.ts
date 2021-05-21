@@ -20,7 +20,7 @@ export class SubtitleTime {
     const ss = +times[2];
     const ms = +times[3];
 
-    return ms + (ss * 1000) + (mm * 60 * 1000) + (hh * 60 * 60 * 1000);
+    return ms + ss * 1000 + mm * 60 * 1000 + hh * 60 * 60 * 1000;
   }
 
   private static getTime(n: number): string {
@@ -35,7 +35,15 @@ export class SubtitleTime {
     const minutes = n % 60;
     const hours = (n - minutes) / 60;
 
-    return this.pad(hours) + ':' + this.pad(minutes) + ':' + this.pad(seconds) + ',' + this.pad(ms, 3);
+    return (
+      this.pad(hours) +
+      ':' +
+      this.pad(minutes) +
+      ':' +
+      this.pad(seconds) +
+      ',' +
+      this.pad(ms, 3)
+    );
   }
 
   private static pad(n: number, z?: number): string {

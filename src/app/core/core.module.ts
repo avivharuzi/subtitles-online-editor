@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -14,8 +12,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 @NgModule({
   declarations: [HomeComponent, NotFoundComponent],
   imports: [
-    CommonModule,
-    FormsModule,
     RouterModule,
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),

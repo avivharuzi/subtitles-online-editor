@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { Subtitle } from './subtitle.interface';
 
 export class SubtitleConverter {
-  private static readonly srtTagsRegExp: RegExp
-    = /<b>|<\/b>|{b}|{\/b}|<i>|<\/i>|{i}|{\/i}|<u>|<\/u>|{u}|{\/u}|<font color=".*">|<font color='.*'>|<\/font>|{\\a.*}/gi;
+  private static readonly srtTagsRegExp: RegExp =
+    /<b>|<\/b>|{b}|{\/b}|<i>|<\/i>|{i}|{\/i}|<u>|<\/u>|{u}|{\/u}|<font color=".*">|<font color='.*'>|<\/font>|{\\a.*}/gi;
 
   private static readonly dashRegExp: RegExp = /^-+|-+$/gm;
 
@@ -21,7 +21,10 @@ export class SubtitleConverter {
     });
   }
 
-  static getSubtitlesFromText(text: string, removeTextFormatting: boolean = false): Subtitle[] {
+  static getSubtitlesFromText(
+    text: string,
+    removeTextFormatting: boolean = false
+  ): Subtitle[] {
     const lines = text.trim().split('\n');
 
     if (!(lines.length > 0)) {
@@ -38,8 +41,12 @@ export class SubtitleConverter {
       const currentLine: string = line.trim();
 
       if (currentLine === '') {
-        if (currentSubtitle.index !== undefined && currentSubtitle.begin !== undefined
-          && currentSubtitle.end !== undefined && currentSubtitle.line1 !== undefined) {
+        if (
+          currentSubtitle.index !== undefined &&
+          currentSubtitle.begin !== undefined &&
+          currentSubtitle.end !== undefined &&
+          currentSubtitle.line1 !== undefined
+        ) {
           currentSubtitle.isEditable = false;
           subtitles.push(currentSubtitle);
         }
@@ -55,10 +62,15 @@ export class SubtitleConverter {
         continue;
       }
 
-      if (currentSubtitle.begin === undefined || currentSubtitle.end === undefined) {
+      if (
+        currentSubtitle.begin === undefined ||
+        currentSubtitle.end === undefined
+      ) {
         const times = currentLine.split('-->');
         if (times.length !== 2) {
-          throw new Error('Invalid text, begin and end times must separated by -->');
+          throw new Error(
+            'Invalid text, begin and end times must separated by -->'
+          );
         }
         currentSubtitle.begin = times[0].trim();
         currentSubtitle.end = times[1].trim();
@@ -66,12 +78,18 @@ export class SubtitleConverter {
       }
 
       if (currentSubtitle.line1 === undefined) {
-        currentSubtitle.line1 = this.modifyLine(currentLine, removeTextFormatting);
+        currentSubtitle.line1 = this.modifyLine(
+          currentLine,
+          removeTextFormatting
+        );
         continue;
       }
 
       if (currentSubtitle.line2 === undefined) {
-        currentSubtitle.line2 = this.modifyLine(currentLine, removeTextFormatting);
+        currentSubtitle.line2 = this.modifyLine(
+          currentLine,
+          removeTextFormatting
+        );
       }
     }
 
@@ -97,7 +115,10 @@ export class SubtitleConverter {
     return text;
   }
 
-  private static modifyLine(line: string, removeTextFormatting: boolean = false): string {
+  private static modifyLine(
+    line: string,
+    removeTextFormatting: boolean = false
+  ): string {
     let modifiedLine = line;
 
     if (removeTextFormatting) {

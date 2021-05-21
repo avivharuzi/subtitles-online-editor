@@ -1,4 +1,11 @@
 <div class="custom-file" [title]="label">
-  <input type="file" aria-label="File Upload" class="custom-file-input" #fileEl [multiple]="multiple" (change)="onChange()">
+  <input
+    type="file"
+    aria-label="File Upload"
+    class="custom-file-input"
+    #fileEl
+    [multiple]="multiple"
+    (change)="onChange()"
+  />
   <label class="custom-file-label">{{ label }}</label>
 </div>

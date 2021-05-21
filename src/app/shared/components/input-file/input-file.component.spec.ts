@@ -6,12 +6,13 @@ describe('InputFileComponent', () => {
   let component: InputFileComponent;
   let fixture: ComponentFixture<InputFileComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [InputFileComponent],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [InputFileComponent],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InputFileComponent);

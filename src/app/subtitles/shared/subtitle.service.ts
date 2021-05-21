@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { Subtitle } from './subtitle.interface';
-import { SubtitleTime } from './subtitle-time';
 import { SUBTITLE_ENCODINGS } from './subtitle-encodings';
+import { SubtitleTime } from './subtitle-time';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +14,7 @@ export class SubtitleService {
   private syncInMs: number;
 
   constructor() {
+    this.subtitlesFilename = '';
     this.subtitles = [];
     this.originalSubtitles = [];
     this.syncInMs = 0;
@@ -42,7 +43,12 @@ export class SubtitleService {
   }
 
   isInEditMode(): boolean {
-    return (this.subtitles && this.subtitles.length > 1) && (this.originalSubtitles && this.originalSubtitles.length > 1);
+    return (
+      this.subtitles &&
+      this.subtitles.length > 1 &&
+      this.originalSubtitles &&
+      this.originalSubtitles.length > 1
+    );
   }
 
   toggleSubtitleIsEditable(i: number): void {
@@ -61,7 +67,13 @@ export class SubtitleService {
     this.subtitles.splice(i, 1);
   }
 
-  updateSubtitle(i: number, begin: string, end: string, line1: string, line2: string): void {
+  updateSubtitle(
+    i: number,
+    begin: string,
+    end: string,
+    line1: string,
+    line2: string
+  ): void {
     if (!this.isInEditMode()) {
       return;
     }
@@ -80,11 +92,13 @@ export class SubtitleService {
       return;
     }
 
+    // @ts-ignore
     const begin = SubtitleTime.getTimePlus(subtitle.end, 1);
     const subtitleBelow = this.subtitles[i + 1];
     let end;
 
     if (subtitleBelow) {
+      // @ts-ignore
       end = SubtitleTime.getTimeMinus(subtitleBelow.begin, 1);
     } else {
       end = SubtitleTime.getTimePlus(begin, 1);
@@ -104,10 +118,17 @@ export class SubtitleService {
 
     this.subtitles = this.subtitles.map((subtitle: Subtitle) => {
       if (ms > 0) {
+        // @ts-ignore
         subtitle.begin = SubtitleTime.getTimePlus(subtitle.begin, ms);
+        // @ts-ignore
         subtitle.end = SubtitleTime.getTimePlus(subtitle.end, ms);
       } else {
-        subtitle.begin = SubtitleTime.getTimeMinus(subtitle.begin, Math.abs(ms));
+        subtitle.begin = SubtitleTime.getTimeMinus(
+          // @ts-ignore
+          subtitle.begin,
+          Math.abs(ms)
+        );
+        // @ts-ignore
         subtitle.end = SubtitleTime.getTimeMinus(subtitle.end, Math.abs(ms));
       }
 
@@ -143,9 +164,10 @@ export class SubtitleService {
   }
 
   resetSubtitles(): void {
+    this.subtitlesFilename = '';
     this.subtitles = [];
     this.originalSubtitles = [];
-    this.subtitlesFilename = null;
+    this.syncInMs = 0;
   }
 
   isEncodingValid(encoding: string): boolean {

@@ -15,33 +15,43 @@ import { SubtitleService } from '../../../subtitles/shared/subtitle.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   subtitleEncodings: SubtitleEncoding[];
-  subtitleEncodingSelected: string;
-  subtitleEncodingExportSelected: string;
-  removeTextFormatting: boolean;
-  file: File;
-  errors: string[];
-  settingsUpdatedSubscription: Subscription;
+  subtitleEncodingSelected: string = '';
+  subtitleEncodingExportSelected: string = '';
+  removeTextFormatting: boolean = false;
+  file: File | null = null;
+  errors: string[] = [];
+  settingsUpdatedSubscription?: Subscription;
 
   constructor(
     private renderer: Renderer2,
     private settingsService: SettingsService,
-    public subtitleService: SubtitleService,
+    public subtitleService: SubtitleService
   ) {
     this.subtitleEncodings = SUBTITLE_ENCODINGS;
     this.updateFormDefaultValues();
   }
 
   ngOnInit(): void {
-    this.settingsUpdatedSubscription = this.settingsService.getSettingsUpdatedObservable().subscribe(() => {
-      this.updateFormDefaultValues();
-    });
+    this.settingsUpdatedSubscription = this.settingsService
+      .getSettingsUpdatedObservable()
+      .subscribe(() => {
+        this.updateFormDefaultValues();
+      });
   }
 
   ngOnDestroy(): void {
-    this.settingsUpdatedSubscription.unsubscribe();
+    if (this.settingsUpdatedSubscription) {
+      this.settingsUpdatedSubscription.unsubscribe();
+    }
   }
 
-  onChangedFiles({ files, errors }: { files: FileList, errors: string[] }): void {
+  onChangedFiles({
+    files,
+    errors,
+  }: {
+    files: FileList;
+    errors: string[];
+  }): void {
     this.errors = errors;
 
     if (errors.length === 0 && files.length > 0) {
@@ -56,13 +66,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    SubtitleConverter.getTextFromFile(this.file, this.subtitleEncodingSelected).subscribe(text => {
+    SubtitleConverter.getTextFromFile(
+      this.file,
+      this.subtitleEncodingSelected
+    ).subscribe(text => {
       try {
-        const subtitles = SubtitleConverter.getSubtitlesFromText(text, this.removeTextFormatting);
+        const subtitles = SubtitleConverter.getSubtitlesFromText(
+          text,
+          this.removeTextFormatting
+        );
         this.subtitleService.setSubtitles(subtitles);
+        // @ts-ignore
         this.subtitleService.setSubtitlesFilename(this.file.name);
         this.file = null;
-        this.errors = null;
+        this.errors = [];
       } catch (e) {
         this.errors = [e];
       }
@@ -78,11 +95,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const text = SubtitleConverter.getTextFromSubtitles(this.subtitleService.getSubtitles());
+    const text = SubtitleConverter.getTextFromSubtitles(
+      this.subtitleService.getSubtitles()
+    );
 
     const element = this.renderer.createElement('a');
-    this.renderer.setAttribute(element, 'href', `data:text/plain;charset=${this.subtitleEncodingExportSelected},`
-      + encodeURIComponent(text));
+    this.renderer.setAttribute(
+      element,
+      'href',
+      `data:text/plain;charset=${this.subtitleEncodingExportSelected},` +
+        encodeURIComponent(text)
+    );
     this.renderer.setAttribute(element, 'download', `${filename}.srt`);
     this.renderer.setStyle(element, 'display', 'none');
     this.renderer.appendChild(document.body, element);
@@ -92,7 +115,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private updateFormDefaultValues(): void {
     this.subtitleEncodingSelected = this.settingsService.getSubtitleEncoding();
-    this.subtitleEncodingExportSelected = this.settingsService.getSubtitleEncodingExport();
+    this.subtitleEncodingExportSelected =
+      this.settingsService.getSubtitleEncodingExport();
     this.removeTextFormatting = this.settingsService.getRemoveTextFormatting();
   }
 }
