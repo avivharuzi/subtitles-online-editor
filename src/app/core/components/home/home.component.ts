@@ -17,7 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   subtitleEncodings: SubtitleEncoding[];
   subtitleEncodingSelected: string = '';
   subtitleEncodingExportSelected: string = '';
-  removeTextFormatting: boolean = false;
+  // @ts-ignore
+  removeTextFormatting: boolean;
   file: File | null = null;
   errors: string[] = [];
   settingsUpdatedSubscription?: Subscription;
